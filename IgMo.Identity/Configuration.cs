@@ -8,14 +8,14 @@ namespace IgMo.Identity
     {
         public static IEnumerable<ApiScope> ApiScopes => new List<ApiScope>
         {
-            new ApiScope("IgMoWebApi", "Web API")
+            new ApiScope("WhsWebApi", "Whs Web Api")
         };
 
         public static IEnumerable<ApiResource> ApiResources => new List<ApiResource>
         {
-            new ApiResource("IgMoWebApi", "Web API", new []{ JwtClaimTypes.Name })
+            new ApiResource("WhsWebApi", "Whs Web Api", new []{ JwtClaimTypes.Name })
             {
-                Scopes = {"IgMoWebApi"}
+                Scopes = {"WhsWebApi"}
             }
         };
 
@@ -30,19 +30,19 @@ namespace IgMo.Identity
             new Client
             {
                 ClientId = "whs-web-api",
-                ClientName = "Whs Web",
+                ClientName = "Whs Web Api",
+                AllowedScopes = {
+                    "WhsWebApi",
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                },
                 AllowedGrantTypes = GrantTypes.Code,
                 RequireClientSecret = false,
                 RequirePkce = true,
                 AllowAccessTokensViaBrowser= true,
                 AllowedCorsOrigins = {"http://..."},
                 RedirectUris = {"http://.../signin-oidc"},
-                PostLogoutRedirectUris = {"http://.../signout-oidc"},
-                AllowedScopes = {
-                    "IgMoWebApi",
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile
-                }
+                PostLogoutRedirectUris = {"http://.../signout-oidc"}
             }
         };
     }

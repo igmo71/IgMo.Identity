@@ -38,17 +38,26 @@ namespace IgMo.Identity
             builder.Services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "IdMo.Identity.Cookie";
-                config.LoginPath= "/Auth/Login";
+                config.LoginPath = "/Auth/Login";
                 config.LogoutPath = "/Auth/Logout";
             });
 
+            builder.Services.AddControllersWithViews();
+
             var app = builder.Build();
 
+            InitializeDb(app);
+
+            app.UseStaticFiles();
             app.UseRouting();
-            app.UseIdentityServer();
+            app.UseIdentityServer();            
+            app.MapDefaultControllerRoute();
 
-            app.MapGet("/", () => "Hello World!");
+            app.Run();
+        }
 
+        private static void InitializeDb(WebApplication app)
+        {
             using (var scope = app.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
@@ -63,8 +72,6 @@ namespace IgMo.Identity
                     logger.LogError(ex, "An error occurred while app initialization.");
                 }
             }
-
-            app.Run();
         }
     }
 }
